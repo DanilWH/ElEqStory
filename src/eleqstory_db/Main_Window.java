@@ -587,7 +587,7 @@ public class Main_Window extends javax.swing.JFrame {
                 btn_mbr_DismissActionPerformed(evt);
             }
         });
-        JPanel_Members.add(btn_mbr_Dismiss, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, -1, -1));
+        JPanel_Members.add(btn_mbr_Dismiss, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 170, -1, -1));
 
         btn_mbr_Employ.setBackground(new java.awt.Color(193, 193, 193));
         btn_mbr_Employ.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/scaled/add-smaller.png"))); // NOI18N
@@ -616,7 +616,7 @@ public class Main_Window extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(table_Members);
 
-        JPanel_Members.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, 580, 480));
+        JPanel_Members.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, 580, 440));
 
         JPanel_RightPanel.add(JPanel_Members, "card4");
 
@@ -656,7 +656,7 @@ public class Main_Window extends javax.swing.JFrame {
         this.position = table_Products.getRowCount() - 1;
         // select the row where the user is on right now.
         table_Products.setRowSelectionInterval(this.position, this.position);
-        this.showItem(this.position);
+        this.showProductItem(this.position);
     }//GEN-LAST:event_btn_LastActionPerformed
 
     private void btn_NextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_NextActionPerformed
@@ -664,7 +664,7 @@ public class Main_Window extends javax.swing.JFrame {
         this.position = (this.position < table_Products.getRowCount() - 1)? this.position + 1 : 0;
         // select the row where the user is on right now.
         table_Products.setRowSelectionInterval(this.position, this.position);
-        showItem(this.position);
+        showProductItem(this.position);
     }//GEN-LAST:event_btn_NextActionPerformed
 
     private void btn_PreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_PreviousActionPerformed
@@ -672,7 +672,7 @@ public class Main_Window extends javax.swing.JFrame {
         this.position = (this.position > 0)? this.position - 1 : table_Products.getRowCount() - 1;
         // select the row where the user is on right now.
         table_Products.setRowSelectionInterval(this.position, this.position);
-        showItem(this.position);
+        showProductItem(this.position);
     }//GEN-LAST:event_btn_PreviousActionPerformed
 
     private void btn_FirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_FirstActionPerformed
@@ -680,7 +680,7 @@ public class Main_Window extends javax.swing.JFrame {
         this.position = 0;
         // select the row where the user is on right now.
         table_Products.setRowSelectionInterval(this.position, this.position);
-        this.showItem(this.position);
+        this.showProductItem(this.position);
     }//GEN-LAST:event_btn_FirstActionPerformed
 
     private void btn_RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RemoveActionPerformed
@@ -778,7 +778,7 @@ public class Main_Window extends javax.swing.JFrame {
 
     private void table_ProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_ProductsMouseClicked
         this.position = table_Products.getSelectedRow();
-        this.showItem(this.position);
+        this.showProductItem(this.position);
     }//GEN-LAST:event_table_ProductsMouseClicked
 
     private void btn_RefreshTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RefreshTableActionPerformed
@@ -911,7 +911,8 @@ public class Main_Window extends javax.swing.JFrame {
     }
     
     private void table_MembersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_MembersMouseClicked
-        // TODO add your handling code here:
+        int index = table_Members.getSelectedRow();
+        this.showMemberItem(index);
     }//GEN-LAST:event_table_MembersMouseClicked
 
     private void btn_MembersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MembersActionPerformed
@@ -998,7 +999,7 @@ public class Main_Window extends javax.swing.JFrame {
         return success;
     }
             
-    private void showItem(int index) {
+    private void showProductItem(int index) {
         /*** fills the fields with an item information depending on the parameter "index". ***/
         
         // get the ArrayList of products.
@@ -1012,6 +1013,27 @@ public class Main_Window extends javax.swing.JFrame {
         // clear the "image" label before set a new image.
         lbl_image.setText("");
         lbl_image.setIcon(resizeImg(null, prItem.getImage()));
+    }
+    
+    private void showMemberItem(int index) {
+        // get the nessesary member from ArrayList of members.
+        Member member = getMembersList().get(index);
+        
+        // set the field with the member's data.
+        txt_mbr_id.setText(Integer.toString(member.getId()));
+        txt_mbr_name.setText(member.getName());
+        txt_mbr_lastName.setText(member.getLastName());
+        
+        // get sex of the member.
+        String sex = table_Members.getModel().getValueAt(index, 3).toString();
+        for (Enumeration btns = bg.getElements(); btns.hasMoreElements();) {
+            AbstractButton button = (AbstractButton) btns.nextElement();
+            
+            if (sex.equals(button.getText())) {
+                button.setSelected(true);
+                break;
+            }
+        }
     }
         
     private boolean isIDCorrect(JTextField field) {
