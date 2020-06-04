@@ -176,6 +176,7 @@ public class Main_Window extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         btn_ClearFields = new javax.swing.JButton();
         btn_RefreshTable = new javax.swing.JButton();
+        btn_searchProduct = new javax.swing.JButton();
         JPanel_Members = new javax.swing.JPanel();
         txt_mbr_id = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -430,6 +431,16 @@ public class Main_Window extends javax.swing.JFrame {
             }
         });
 
+        btn_searchProduct.setBackground(new java.awt.Color(193, 193, 193));
+        btn_searchProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/scaled/add-smaller.png"))); // NOI18N
+        btn_searchProduct.setText("Search");
+        btn_searchProduct.setIconTextGap(5);
+        btn_searchProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchProductActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout JPanel_ProductsLayout = new javax.swing.GroupLayout(JPanel_Products);
         JPanel_Products.setLayout(JPanel_ProductsLayout);
         JPanel_ProductsLayout.setHorizontalGroup(
@@ -450,16 +461,19 @@ public class Main_Window extends javax.swing.JFrame {
                                 .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(JPanel_ProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_id, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txt_name, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txt_addDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanel_ProductsLayout.createSequentialGroup()
+                                .addComponent(txt_price, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel6))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanel_ProductsLayout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btn_ChooseImage))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPanel_ProductsLayout.createSequentialGroup()
-                                .addComponent(txt_price, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txt_id, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6))))
+                                .addComponent(btn_searchProduct))))
                     .addGroup(JPanel_ProductsLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(JPanel_ProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -494,7 +508,9 @@ public class Main_Window extends javax.swing.JFrame {
                     .addGroup(JPanel_ProductsLayout.createSequentialGroup()
                         .addGroup(JPanel_ProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(JPanel_ProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btn_searchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(JPanel_ProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -911,6 +927,9 @@ public class Main_Window extends javax.swing.JFrame {
     }
     
     private void table_MembersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_MembersMouseClicked
+        /*** shows a member information by clicking a row. ***/
+        
+        // get the index of the selected row.
         int index = table_Members.getSelectedRow();
         this.showMemberItem(index);
     }//GEN-LAST:event_table_MembersMouseClicked
@@ -924,6 +943,27 @@ public class Main_Window extends javax.swing.JFrame {
         // show data in the jtable.
         this.showMembersList();
     }//GEN-LAST:event_btn_MembersActionPerformed
+
+    private void btn_searchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchProductActionPerformed
+        /*** Returns a product by its ID. ***/
+        
+        // get the ID from its field if it's correct.
+        if (!this.isIDCorrect(txt_id)) return;
+        int id = Integer.parseInt(txt_id.getText());
+        
+        ArrayList<Product> products = this.getProductsList();
+        for (int i = 0, len = products.size(); i < len; i++) {
+            // if we find the nessesary product.
+            if (products.get(i).getId() == id) {
+                // then we show its full information ...
+                this.showProductItem(i);
+                // ... and immediately break the cycle.
+                return;
+            }
+        }
+        // if there is no product with the id we confirm the user about it.
+        JOptionPane.showMessageDialog(null, "There is no product with the ID = " + id + "!");
+    }//GEN-LAST:event_btn_searchProductActionPerformed
     
     private boolean processQuery(String query) {
         /*** processes a query to the database. 
@@ -1148,6 +1188,7 @@ public class Main_Window extends javax.swing.JFrame {
             
         }
         catch (SQLException ex) {
+            // catch "Statement st = con.createStatement()".
             JOptionPane.showMessageDialog(null, "Some problems have appeared.");
             System.out.println(ex);
         }
@@ -1278,6 +1319,7 @@ public class Main_Window extends javax.swing.JFrame {
     private javax.swing.JButton btn_Update;
     private javax.swing.JButton btn_mbr_Dismiss;
     private javax.swing.JButton btn_mbr_Employ;
+    private javax.swing.JButton btn_searchProduct;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
