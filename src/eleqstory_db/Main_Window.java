@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -42,9 +43,6 @@ public class Main_Window extends javax.swing.JFrame {
      */
     public Main_Window() {
         initComponents();
-        
-        // show data in the jtable.
-        showProductsList();
         
         // create radio buttons group.
         this.bg =  new ButtonGroup();
@@ -129,8 +127,6 @@ public class Main_Window extends javax.swing.JFrame {
         return true;
     }
     
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -181,7 +177,7 @@ public class Main_Window extends javax.swing.JFrame {
         btn_ClearFields = new javax.swing.JButton();
         btn_RefreshTable = new javax.swing.JButton();
         JPanel_Members = new javax.swing.JPanel();
-        txt_mbt_id = new javax.swing.JTextField();
+        txt_mbr_id = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         txt_mbr_name = new javax.swing.JTextField();
@@ -545,10 +541,10 @@ public class Main_Window extends javax.swing.JFrame {
         JPanel_Members.setBackground(new java.awt.Color(254, 254, 254));
         JPanel_Members.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        txt_mbt_id.setBackground(java.awt.Color.white);
-        txt_mbt_id.setOpaque(false);
-        txt_mbt_id.setPreferredSize(new java.awt.Dimension(15, 50));
-        JPanel_Members.add(txt_mbt_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 200, 30));
+        txt_mbr_id.setBackground(java.awt.Color.white);
+        txt_mbr_id.setOpaque(false);
+        txt_mbr_id.setPreferredSize(new java.awt.Dimension(15, 50));
+        JPanel_Members.add(txt_mbr_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 200, 30));
 
         jLabel9.setForeground(new java.awt.Color(1, 1, 1));
         jLabel9.setText("ID:");
@@ -691,7 +687,7 @@ public class Main_Window extends javax.swing.JFrame {
         /*** Removes an entry from the database, if any. ***/
 
         // check the correctness of the "ID" field.
-        if (!isIDCorrect()) return;
+        if (!isIDCorrect(txt_id)) return;
         String id = txt_id.getText();
 
         // get a connection with the database.
@@ -715,7 +711,7 @@ public class Main_Window extends javax.swing.JFrame {
             }
             finally {
                 // close the statement.
-                try {ps.close();} catch (Exception ex) {}
+                try {ps.close();} catch (SQLException ex) {}
             }
         }
         catch (Exception ex) {
@@ -731,7 +727,7 @@ public class Main_Window extends javax.swing.JFrame {
     private void btn_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_UpdateActionPerformed
         /*** The Update button work implementation. ***/
 
-        if (!isIDCorrect()) return;
+        if (!isIDCorrect(txt_id)) return;
 
         String id = txt_id.getText();
 
@@ -809,10 +805,49 @@ public class Main_Window extends javax.swing.JFrame {
         JPanel_RightPanel.add(JPanel_Products);
         JPanel_RightPanel.repaint();
         JPanel_RightPanel.revalidate();
+        
+        // show data of products in the jtable.
+        this.showProductsList();
     }//GEN-LAST:event_btn_ProductsActionPerformed
 
     private void btn_mbr_DismissActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mbr_DismissActionPerformed
-        // TODO add your handling code here:
+        if (!isIDCorrect(txt_mbr_id)) return;
+        String id = txt_mbr_id.getText();
+        
+        Connection con = this.getConnection();
+        
+        try {
+            String query = "DELETE FROM members WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            
+            try {
+                // set the dismissing member id.
+                ps.setString(1, id);
+                
+                // execute the query.
+                ps.executeUpdate();
+                
+                // update data in the jtable of members.
+                this.showMembersList();
+                
+                // confirm success of the deletion.
+                JOptionPane.showMessageDialog(null, "The member with id = " + id + " has been successfully dismissed.");
+            }
+            catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Couldn't execute the query!");
+                System.out.println(ex);
+            }
+            finally {
+                try {ps.close();} catch (SQLException ex) {}
+            }
+        }
+        catch (SQLException ex) {
+            // catch exception of the prepared statement connection.
+            JOptionPane.showMessageDialog(null, "Some problems have appeared while preparing the statement!");
+        }
+        finally {
+            try {con.close();} catch (SQLException ex) {}
+        }
     }//GEN-LAST:event_btn_mbr_DismissActionPerformed
 
     private void btn_mbr_EmployActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mbr_EmployActionPerformed
@@ -836,8 +871,15 @@ public class Main_Window extends javax.swing.JFrame {
                     // execute the query.
                     ps.executeUpdate();
                     
+                    // update data in the jtable of members.
+                    this.showMembersList();
+                    
                     // confirm success.
                     JOptionPane.showMessageDialog(null, "The new member has been successfully added!");
+                }
+                catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Couldn't execute the query!");
+                    System.out.println(ex);
                 }
                 finally {
                     // close the connection of the prepared statement.
@@ -846,7 +888,7 @@ public class Main_Window extends javax.swing.JFrame {
             }
             catch (Exception ex) {
                 // catch exception of the prepared statement connection.
-                JOptionPane.showMessageDialog(null, ex);
+                JOptionPane.showMessageDialog(null, "Some problems have appeared while preparing the statement!");
             }
             finally {
                 // close the connection.
@@ -877,6 +919,9 @@ public class Main_Window extends javax.swing.JFrame {
         JPanel_RightPanel.add(JPanel_Members);
         JPanel_RightPanel.repaint();
         JPanel_RightPanel.revalidate();
+        
+        // show data in the jtable.
+        this.showMembersList();
     }//GEN-LAST:event_btn_MembersActionPerformed
     
     private boolean processQuery(String query) {
@@ -969,10 +1014,10 @@ public class Main_Window extends javax.swing.JFrame {
         lbl_image.setIcon(resizeImg(null, prItem.getImage()));
     }
         
-    private boolean isIDCorrect() {
+    private boolean isIDCorrect(JTextField field) {
         /*** checks if the id is correct. ***/
         
-        String id = txt_id.getText();
+        String id = field.getText();
         
         if (id.isEmpty()) {
             JOptionPane.showMessageDialog(null, "The field \"ID\" must not be empty!");
@@ -983,7 +1028,7 @@ public class Main_Window extends javax.swing.JFrame {
                 Integer.parseInt(id);
                 return true;
             }
-            catch (Exception ex) {
+            catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Enter the correct ID!");
                 return false;
             }
@@ -1019,6 +1064,13 @@ public class Main_Window extends javax.swing.JFrame {
                     // add the instance of each row into the created ArrayList.
                     productsList.add(product);
                 }
+                
+                // close the execution.
+                try {rs.close();} catch (SQLException ex) {}
+            }
+            catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Couldn't show products into the table.!");
+                System.out.println(ex);
             }
             finally {
                 // close the statement.
@@ -1027,6 +1079,7 @@ public class Main_Window extends javax.swing.JFrame {
         }
         catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Some problems have appeared.");
+            System.out.println(ex);
         }
         finally {
             // close the database connection.
@@ -1036,12 +1089,60 @@ public class Main_Window extends javax.swing.JFrame {
         return productsList;
     }
     
+    private ArrayList<Member> getMembersList() {
+        /*** Return members list. ***/
+        
+        ArrayList<Member> membersList = new ArrayList<Member>();
+        Connection con = this.getConnection();
+        
+        try {
+            Statement st = con.createStatement();
+            
+            try {
+                // get the table with members.
+                String query = "SELECT * FROM members";
+                ResultSet members = st.executeQuery(query);
+                
+                // go through the ResultSet instance.
+                while (members.next()) {
+                    // create an object of the current member.
+                    Member member = new Member(members.getInt("id"), members.getString("name"),
+                        members.getString("last_name"), members.getString("Sex"));
+                    
+                    // store the gotten member into the created ArrayList.
+                    membersList.add(member);
+                }
+                
+                // close the execution.
+                try {members.close();} catch (SQLException ex) {}
+            }
+            catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Couldn't show members into the table!");
+                System.out.println(ex);
+            }
+            finally {
+                try {st.close();} catch (SQLException ex) {}
+            }
+            
+        }
+        catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Some problems have appeared.");
+            System.out.println(ex);
+        }
+        finally {
+            try {con.close();} catch (SQLException ex) {}
+        }
+        
+        // return the gotten member list as a result.
+        return membersList;
+    }
+    
     private void showProductsList() {
         /*** The behavior of the function follows from the function name. ***/
         
         // get the ArrayList of products from the database.
-        ArrayList<Product> productsList = getProductsList();
-        // create a model of the table we will populate the data in.
+        ArrayList<Product> productsList = this.getProductsList();
+        // create a model of the table that we will populate the data in.
         DefaultTableModel model = (DefaultTableModel) table_Products.getModel();
         // clear the jtable before we fill it.
         model.setRowCount(0);
@@ -1049,12 +1150,45 @@ public class Main_Window extends javax.swing.JFrame {
         Object[] row = new Object[4];
         // go through the ArrayList of products and add its each element
         // to the model of the table as an array of Objects.
-        for (int i = 0; i < productsList.size(); i++) {
-            row[0] = productsList.get(i).getId();
-            row[1] = productsList.get(i).getName();
-            row[2] = productsList.get(i).getPrice();
-            row[3] = productsList.get(i).getAddDate();
+        for (int i = 0, len = productsList.size(); i < len; i++) {
+            // get one product.
+            Product product = productsList.get(i);
             
+            // store the product's data in the temprorary array.
+            row[0] = product.getId();
+            row[1] = product.getName();
+            row[2] = product.getPrice();
+            row[3] = product.getAddDate();
+            
+            // add the prepared row onto the jtable of products.
+            model.addRow(row);
+        }
+    }
+    
+    private void showMembersList() {
+        /*** Populates the "table_Members" table with members. ***/
+        
+        // get the members list.
+        ArrayList<Member> membersList = getMembersList();
+        // get the model of the jtable we'll populate with the members' data.
+        DefaultTableModel model = (DefaultTableModel) table_Members.getModel();
+        // clear the jtable of members before we fill it.
+        model.setRowCount(0);
+        
+        // a temprorary array that keeps data of one member in the order according
+        // the order of the table columns of one row.
+        Object[] row = new Object[4];
+        for (int i = 0, len = membersList.size(); i < len; i++) {
+            // get one member.
+            Member member = membersList.get(i);
+            
+            // store the member's data in the temrorary array.
+            row[0] = member.getId();
+            row[1] = member.getName();
+            row[2] = member.getLastName();
+            row[3] = member.getSex();
+            
+            // add the prepared row onto the jtable of products.
             model.addRow(row);
         }
     }
@@ -1144,9 +1278,9 @@ public class Main_Window extends javax.swing.JFrame {
     private javax.swing.JTable table_Products;
     private javax.swing.JTextField txt_addDate;
     private javax.swing.JTextField txt_id;
+    private javax.swing.JTextField txt_mbr_id;
     private javax.swing.JTextField txt_mbr_lastName;
     private javax.swing.JTextField txt_mbr_name;
-    private javax.swing.JTextField txt_mbt_id;
     private javax.swing.JTextField txt_name;
     private javax.swing.JTextField txt_price;
     // End of variables declaration//GEN-END:variables
