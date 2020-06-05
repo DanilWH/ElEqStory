@@ -5,6 +5,10 @@
  */
 package eleqstory_db;
 
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import javax.swing.JOptionPane;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -49,8 +54,6 @@ public class Main_Window extends javax.swing.JFrame {
         this.bg.add(radio_Male);
         this.bg.add(radio_Female);
     }
-    
-    /*** the own code. ***/
     
     private Connection getConnection() {
         /*** Returns the Connection object or null if there is no connection with the database. ***/
@@ -149,9 +152,11 @@ public class Main_Window extends javax.swing.JFrame {
         btn_SalesRecords = new javax.swing.JButton();
         btn_Back = new javax.swing.JButton();
         JPanel_RightPanel = new javax.swing.JPanel();
-        JPanel_Home = new javax.swing.JPanel();
+        JPanel_Home = new keeptoo.KGradientPanel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
         JPanel_Products = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -260,20 +265,30 @@ public class Main_Window extends javax.swing.JFrame {
 
         JPanel_RightPanel.setLayout(new java.awt.CardLayout());
 
-        JPanel_Home.setBackground(new java.awt.Color(254, 254, 254));
+        JPanel_Home.setkEndColor(new java.awt.Color(86, 180, 211));
+        JPanel_Home.setkStartColor(new java.awt.Color(52, 143, 80));
         JPanel_Home.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setFont(new java.awt.Font("Consolas", 0, 48)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(1, 1, 1));
         jLabel7.setText("Home Page");
-        JPanel_Home.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 240, 80));
+        JPanel_Home.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 50, 240, 80));
 
-        jLabel8.setFont(new java.awt.Font("Consolas", 0, 48)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(1, 1, 1));
-        jLabel8.setText("Welcome to ProductControl App!");
-        JPanel_Home.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 810, 80));
+        jLabel13.setForeground(new java.awt.Color(1, 1, 1));
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo/SmartElectroTransparent.png"))); // NOI18N
+        JPanel_Home.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, 400, 240));
 
-        JPanel_RightPanel.add(JPanel_Home, "card3");
+        jLabel14.setFont(new java.awt.Font("Consolas", 1, 36)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(1, 1, 1));
+        jLabel14.setText("Application!");
+        JPanel_Home.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 300, 240, 80));
+
+        jLabel15.setFont(new java.awt.Font("Consolas", 1, 36)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(1, 1, 1));
+        jLabel15.setText("Welcome to");
+        JPanel_Home.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, 210, 80));
+
+        JPanel_RightPanel.add(JPanel_Home, "card5");
 
         JPanel_Products.setBackground(java.awt.Color.white);
 
@@ -802,30 +817,6 @@ public class Main_Window extends javax.swing.JFrame {
         this.showProductsList();
     }//GEN-LAST:event_btn_RefreshTableActionPerformed
 
-    private void btn_OperationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_OperationsActionPerformed
-        JPanel_sideBar.removeAll();
-        JPanel_sideBar.add(JPanel_Operations);
-        JPanel_sideBar.repaint();
-        JPanel_sideBar.revalidate();
-    }//GEN-LAST:event_btn_OperationsActionPerformed
-
-    private void btn_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_BackActionPerformed
-        JPanel_sideBar.removeAll();
-        JPanel_sideBar.add(JPanel_Basics);
-        JPanel_sideBar.repaint();
-        JPanel_sideBar.revalidate();
-    }//GEN-LAST:event_btn_BackActionPerformed
-
-    private void btn_ProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ProductsActionPerformed
-        JPanel_RightPanel.removeAll();
-        JPanel_RightPanel.add(JPanel_Products);
-        JPanel_RightPanel.repaint();
-        JPanel_RightPanel.revalidate();
-        
-        // show data of products in the jtable.
-        this.showProductsList();
-    }//GEN-LAST:event_btn_ProductsActionPerformed
-
     private void btn_mbr_DismissActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_mbr_DismissActionPerformed
         if (!isIDCorrect(txt_mbr_id)) return;
         String id = txt_mbr_id.getText();
@@ -934,16 +925,6 @@ public class Main_Window extends javax.swing.JFrame {
         this.showMemberItem(index);
     }//GEN-LAST:event_table_MembersMouseClicked
 
-    private void btn_MembersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MembersActionPerformed
-        JPanel_RightPanel.removeAll();
-        JPanel_RightPanel.add(JPanel_Members);
-        JPanel_RightPanel.repaint();
-        JPanel_RightPanel.revalidate();
-        
-        // show data in the jtable.
-        this.showMembersList();
-    }//GEN-LAST:event_btn_MembersActionPerformed
-
     private void btn_searchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchProductActionPerformed
         /*** Returns a product by its ID. ***/
         
@@ -964,6 +945,40 @@ public class Main_Window extends javax.swing.JFrame {
         // if there is no product with the id we confirm the user about it.
         JOptionPane.showMessageDialog(null, "There is no product with the ID = " + id + "!");
     }//GEN-LAST:event_btn_searchProductActionPerformed
+
+    private void btn_OperationsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_OperationsActionPerformed
+        JPanel_sideBar.removeAll();
+        JPanel_sideBar.add(JPanel_Operations);
+        JPanel_sideBar.repaint();
+        JPanel_sideBar.revalidate();
+    }//GEN-LAST:event_btn_OperationsActionPerformed
+
+    private void btn_BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_BackActionPerformed
+        JPanel_sideBar.removeAll();
+        JPanel_sideBar.add(JPanel_Basics);
+        JPanel_sideBar.repaint();
+        JPanel_sideBar.revalidate();
+    }//GEN-LAST:event_btn_BackActionPerformed
+
+    private void btn_MembersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_MembersActionPerformed
+        JPanel_RightPanel.removeAll();
+        JPanel_RightPanel.add(JPanel_Members);
+        JPanel_RightPanel.repaint();
+        JPanel_RightPanel.revalidate();
+
+        // show data in the jtable.
+        this.showMembersList();
+    }//GEN-LAST:event_btn_MembersActionPerformed
+
+    private void btn_ProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ProductsActionPerformed
+        JPanel_RightPanel.removeAll();
+        JPanel_RightPanel.add(JPanel_Products);
+        JPanel_RightPanel.repaint();
+        JPanel_RightPanel.revalidate();
+
+        // show data of products in the jtable.
+        this.showProductsList();
+    }//GEN-LAST:event_btn_ProductsActionPerformed
     
     private boolean processQuery(String query) {
         /*** processes a query to the database. 
@@ -1293,7 +1308,7 @@ public class Main_Window extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanel_Basics;
-    private javax.swing.JPanel JPanel_Home;
+    private keeptoo.KGradientPanel JPanel_Home;
     private javax.swing.JPanel JPanel_Members;
     private javax.swing.JPanel JPanel_Operations;
     private javax.swing.JPanel JPanel_Products;
@@ -1324,13 +1339,15 @@ public class Main_Window extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
