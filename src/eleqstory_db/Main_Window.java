@@ -142,6 +142,7 @@ public class Main_Window extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         JPanel_sideBar = new javax.swing.JPanel();
         JPanel_Basics = new keeptoo.KGradientPanel();
+        btn_homePage = new javax.swing.JButton();
         btn_Guides = new javax.swing.JButton();
         btn_Operations = new javax.swing.JButton();
         btn_Reports = new javax.swing.JButton();
@@ -157,7 +158,7 @@ public class Main_Window extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        JPanel_Products = new javax.swing.JPanel();
+        JPanel_Products = new keeptoo.KGradientPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -182,7 +183,7 @@ public class Main_Window extends javax.swing.JFrame {
         btn_ClearFields = new javax.swing.JButton();
         btn_RefreshTable = new javax.swing.JButton();
         btn_searchProduct = new javax.swing.JButton();
-        JPanel_Members = new javax.swing.JPanel();
+        JPanel_Members = new keeptoo.KGradientPanel();
         txt_mbr_id = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -205,6 +206,14 @@ public class Main_Window extends javax.swing.JFrame {
         JPanel_Basics.setkGradientFocus(100);
         JPanel_Basics.setkStartColor(new java.awt.Color(48, 167, 207));
         JPanel_Basics.setLayout(new java.awt.GridLayout(12, 0));
+
+        btn_homePage.setText("Home Page");
+        btn_homePage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_homePageActionPerformed(evt);
+            }
+        });
+        JPanel_Basics.add(btn_homePage);
 
         btn_Guides.setText("Guides");
         JPanel_Basics.add(btn_Guides);
@@ -294,7 +303,8 @@ public class Main_Window extends javax.swing.JFrame {
 
         JPanel_RightPanel.add(JPanel_Home, "card5");
 
-        JPanel_Products.setBackground(java.awt.Color.white);
+        JPanel_Products.setkEndColor(new java.awt.Color(48, 167, 207));
+        JPanel_Products.setkStartColor(new java.awt.Color(47, 222, 101));
 
         jLabel1.setForeground(new java.awt.Color(1, 1, 1));
         jLabel1.setText("ID:");
@@ -571,9 +581,10 @@ public class Main_Window extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        JPanel_RightPanel.add(JPanel_Products, "card2");
+        JPanel_RightPanel.add(JPanel_Products, "card5");
 
-        JPanel_Members.setBackground(new java.awt.Color(254, 254, 254));
+        JPanel_Members.setkEndColor(new java.awt.Color(48, 167, 207));
+        JPanel_Members.setkStartColor(new java.awt.Color(47, 222, 101));
         JPanel_Members.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txt_mbr_id.setBackground(java.awt.Color.white);
@@ -653,7 +664,7 @@ public class Main_Window extends javax.swing.JFrame {
 
         JPanel_Members.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, 580, 440));
 
-        JPanel_RightPanel.add(JPanel_Members, "card4");
+        JPanel_RightPanel.add(JPanel_Members, "card5");
 
         jSplitPane1.setRightComponent(JPanel_RightPanel);
 
@@ -983,6 +994,13 @@ public class Main_Window extends javax.swing.JFrame {
         // show data of products in the jtable.
         this.showProductsList();
     }//GEN-LAST:event_btn_ProductsActionPerformed
+
+    private void btn_homePageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_homePageActionPerformed
+        JPanel_RightPanel.removeAll();
+        JPanel_RightPanel.add(JPanel_Home);
+        JPanel_RightPanel.repaint();
+        JPanel_RightPanel.revalidate();
+    }//GEN-LAST:event_btn_homePageActionPerformed
     
     private boolean processQuery(String query) {
         /*** processes a query to the database. 
@@ -1313,9 +1331,9 @@ public class Main_Window extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private keeptoo.KGradientPanel JPanel_Basics;
     private keeptoo.KGradientPanel JPanel_Home;
-    private javax.swing.JPanel JPanel_Members;
+    private keeptoo.KGradientPanel JPanel_Members;
     private keeptoo.KGradientPanel JPanel_Operations;
-    private javax.swing.JPanel JPanel_Products;
+    private keeptoo.KGradientPanel JPanel_Products;
     private javax.swing.JPanel JPanel_RightPanel;
     private javax.swing.JPanel JPanel_sideBar;
     private javax.swing.JButton btn_About;
@@ -1336,6 +1354,7 @@ public class Main_Window extends javax.swing.JFrame {
     private javax.swing.JButton btn_Reports;
     private javax.swing.JButton btn_SalesRecords;
     private javax.swing.JButton btn_Update;
+    private javax.swing.JButton btn_homePage;
     private javax.swing.JButton btn_mbr_Dismiss;
     private javax.swing.JButton btn_mbr_Employ;
     private javax.swing.JButton btn_searchProduct;
