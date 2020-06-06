@@ -141,12 +141,12 @@ public class Main_Window extends javax.swing.JFrame {
 
         jSplitPane1 = new javax.swing.JSplitPane();
         JPanel_sideBar = new javax.swing.JPanel();
-        JPanel_Basics = new javax.swing.JPanel();
+        JPanel_Basics = new keeptoo.KGradientPanel();
         btn_Guides = new javax.swing.JButton();
         btn_Operations = new javax.swing.JButton();
         btn_Reports = new javax.swing.JButton();
         btn_About = new javax.swing.JButton();
-        JPanel_Operations = new javax.swing.JPanel();
+        JPanel_Operations = new keeptoo.KGradientPanel();
         btn_Products = new javax.swing.JButton();
         btn_Members = new javax.swing.JButton();
         btn_SalesRecords = new javax.swing.JButton();
@@ -201,7 +201,9 @@ public class Main_Window extends javax.swing.JFrame {
 
         JPanel_sideBar.setLayout(new java.awt.CardLayout());
 
-        JPanel_Basics.setBackground(new java.awt.Color(254, 254, 254));
+        JPanel_Basics.setkEndColor(new java.awt.Color(47, 222, 101));
+        JPanel_Basics.setkGradientFocus(100);
+        JPanel_Basics.setkStartColor(new java.awt.Color(48, 167, 207));
         JPanel_Basics.setLayout(new java.awt.GridLayout(12, 0));
 
         btn_Guides.setText("Guides");
@@ -227,9 +229,11 @@ public class Main_Window extends javax.swing.JFrame {
         btn_About.setMinimumSize(new java.awt.Dimension(100, 32));
         JPanel_Basics.add(btn_About);
 
-        JPanel_sideBar.add(JPanel_Basics, "card2");
+        JPanel_sideBar.add(JPanel_Basics, "card4");
 
-        JPanel_Operations.setBackground(new java.awt.Color(254, 254, 254));
+        JPanel_Operations.setkEndColor(new java.awt.Color(47, 222, 101));
+        JPanel_Operations.setkGradientFocus(100);
+        JPanel_Operations.setkStartColor(new java.awt.Color(48, 167, 207));
         JPanel_Operations.setLayout(new java.awt.GridLayout(12, 0));
 
         btn_Products.setText("Products");
@@ -259,14 +263,14 @@ public class Main_Window extends javax.swing.JFrame {
         });
         JPanel_Operations.add(btn_Back);
 
-        JPanel_sideBar.add(JPanel_Operations, "card3");
+        JPanel_sideBar.add(JPanel_Operations, "card4");
 
         jSplitPane1.setLeftComponent(JPanel_sideBar);
 
         JPanel_RightPanel.setLayout(new java.awt.CardLayout());
 
-        JPanel_Home.setkEndColor(new java.awt.Color(86, 180, 211));
-        JPanel_Home.setkStartColor(new java.awt.Color(52, 143, 80));
+        JPanel_Home.setkEndColor(new java.awt.Color(48, 167, 207));
+        JPanel_Home.setkStartColor(new java.awt.Color(47, 222, 101));
         JPanel_Home.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setFont(new java.awt.Font("Consolas", 0, 48)); // NOI18N
@@ -1307,10 +1311,10 @@ public class Main_Window extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel JPanel_Basics;
+    private keeptoo.KGradientPanel JPanel_Basics;
     private keeptoo.KGradientPanel JPanel_Home;
     private javax.swing.JPanel JPanel_Members;
-    private javax.swing.JPanel JPanel_Operations;
+    private keeptoo.KGradientPanel JPanel_Operations;
     private javax.swing.JPanel JPanel_Products;
     private javax.swing.JPanel JPanel_RightPanel;
     private javax.swing.JPanel JPanel_sideBar;
